@@ -14,8 +14,9 @@ def D_train(x, G, D, D_optimizer, criterion):
     D_output = D(x_real)
     D_real_loss = criterion(D_output, y_real)
     D_real_score = D_output
+    D_real_acc = ((D_output.squeeze() > 0.5) == y_real.squeeze()).float().mean().item()
 
-    # train discriminator on facke
+    # train discriminator on fake
     z = torch.randn(x.shape[0], 100).cuda()
     x_fake, y_fake = G(z), torch.zeros(x.shape[0], 1).cuda()
 
@@ -23,17 +24,28 @@ def D_train(x, G, D, D_optimizer, criterion):
     
     D_fake_loss = criterion(D_output, y_fake)
     D_fake_score = D_output
+    
+    D_fake_acc = ((D_output.squeeze() > 0.5) == y_fake.squeeze()).float().mean().item()
 
     # gradient backprop & optimize ONLY D's parameters
     D_loss = D_real_loss + D_fake_loss
     D_loss.backward()
     D_optimizer.step()
+
+    D_metrics = {
+        "D_real_acc" : D_real_acc,
+        "D_fake_acc" : D_fake_acc,
+        "D_real_loss" : D_real_loss.detach().cpu().item(),
+        "D_fake_loss" : D_fake_loss.detach().cpu().item()
+    }
         
-    return  D_loss.data.item()
+    return D_metrics
 
 
 def G_train(x, G, D, G_optimizer, criterion):
     #=======================Train the generator=======================#
+
+
     G.zero_grad()
 
     z = torch.randn(x.shape[0], 100).cuda()
@@ -46,8 +58,15 @@ def G_train(x, G, D, G_optimizer, criterion):
     # gradient backprop & optimize ONLY G's parameters
     G_loss.backward()
     G_optimizer.step()
+
+    G_acc = ((D_output.squeeze() > 0.5) == y.squeeze()).float().mean().item()
+    
+    G_metrics = {
+        "G_acc" : G_acc,
+        "G_loss" : G_loss.detach().cpu().item()
+    }
         
-    return G_loss.data.item()
+    return G_metrics
 
 
 
