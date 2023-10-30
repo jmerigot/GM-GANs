@@ -1,9 +1,10 @@
 import torch
+import torchvision
 import os
+import json
 
 
-
-def D_train(x, G, D, D_optimizer, criterion):
+def D_train(x, L_G, G, D, D_optimizer, criterion):
     #=======================Train the discriminator=======================#
     D.zero_grad()
 
@@ -17,11 +18,11 @@ def D_train(x, G, D, D_optimizer, criterion):
     D_real_acc = ((D_output.squeeze() > 0.5) == y_real.squeeze()).float().mean().item()
 
     # train discriminator on fake
-    z = torch.randn(x.shape[0], 100).cuda()
+    # z = torch.randn(x.shape[0], 100).cuda()
+    z = L_G(batch_size=x.shape[0]).cuda()
     x_fake, y_fake = G(z), torch.zeros(x.shape[0], 1).cuda()
 
     D_output =  D(x_fake)
-    
     D_fake_loss = criterion(D_output, y_fake)
     D_fake_score = D_output
     
@@ -42,13 +43,13 @@ def D_train(x, G, D, D_optimizer, criterion):
     return D_metrics
 
 
-def G_train(x, G, D, G_optimizer, criterion):
+def G_train(x, L_G, G, D, G_optimizer, criterion):
     #=======================Train the generator=======================#
 
 
     G.zero_grad()
 
-    z = torch.randn(x.shape[0], 100).cuda()
+    z = L_G(batch_size=x.shape[0]).cuda()
     y = torch.ones(x.shape[0], 1).cuda()
                  
     G_output = G(z)
@@ -70,12 +71,36 @@ def G_train(x, G, D, G_optimizer, criterion):
 
 
 
-def save_models(G, D, folder):
+def save_models(L_G, G, D, folder):
     torch.save(G.state_dict(), os.path.join(folder,'G.pth'))
     torch.save(D.state_dict(), os.path.join(folder,'D.pth'))
+    torch.save(L_G.state_dict(), os.path.join(folder,'L_G.pth'))
 
 
 def load_model(G, folder):
     ckpt = torch.load(os.path.join(folder,'G.pth'))
     G.load_state_dict({k.replace('module.', ''): v for k, v in ckpt.items()})
     return G
+
+def load_config(config_file):
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+    return config
+
+def generate_sample(L_G, G, epoch, config):
+    
+    batch_size = config["training"]["batch_size"]
+    run_name = config["run_name"]
+    dir = 'runs/' + run_name + f"/epoch_{epoch}"
+    os.makedirs(dir, exist_ok=True)
+
+    n_samples = 0
+    while n_samples<20:
+        # z = torch.randn(args.batch_size, 100).cuda()   
+        z = L_G(batch_size=batch_size).cuda()
+        x = G(z)
+        x = x.reshape(batch_size, 28, 28)
+        for k in range(x.shape[0]):
+            if n_samples<20:
+                torchvision.utils.save_image(x[k:k+1], os.path.join(dir, f'{n_samples}.png'))         
+                n_samples += 1

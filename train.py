@@ -7,8 +7,9 @@ import torch.nn as nn
 import torch.optim as optim
 
 
-from model import Generator, Discriminator
-from utils import D_train, G_train, save_models
+
+from model import Generator, Discriminator, Latent_Generator
+from utils import D_train, G_train, save_models, load_config, generate_sample
 
 from torch.utils.tensorboard import SummaryWriter
 
@@ -23,10 +24,14 @@ if __name__ == '__main__':
                         help="Size of mini-batches for SGD")
 
     args = parser.parse_args()
+    
 
+    config = load_config("config.json")
 
     os.makedirs('chekpoints', exist_ok=True)
     os.makedirs('data', exist_ok=True)
+
+    writer = SummaryWriter("runs/" + config["run_name"])
 
     # Data Pipeline
     print('Dataset loading...')
@@ -38,7 +43,6 @@ if __name__ == '__main__':
     train_dataset = datasets.MNIST(root='data/MNIST/', train=True, transform=transform, download=True)
     test_dataset = datasets.MNIST(root='data/MNIST/', train=False, transform=transform, download=False)
 
-
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, 
                                                batch_size=args.batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset, 
@@ -49,13 +53,12 @@ if __name__ == '__main__':
     mnist_dim = 784
     G = torch.nn.DataParallel(Generator(g_output_dim = mnist_dim)).cuda()
     D = torch.nn.DataParallel(Discriminator(mnist_dim)).cuda()
+    L_G = Latent_Generator(config)
 
 
     # model = DataParallel(model).cuda()
     print('Model loaded.')
     # Optimizer 
-
-
 
     # define loss
     criterion = nn.BCELoss() 
@@ -86,8 +89,8 @@ if __name__ == '__main__':
              
         for batch_idx, (x, _) in enumerate(train_loader):
             x = x.view(-1, mnist_dim)
-            D_metrics = D_train(x, G, D, D_optimizer, criterion)
-            G_metrics = G_train(x, G, D, G_optimizer, criterion)
+            D_metrics = D_train(x, L_G, G, D, D_optimizer, criterion)
+            G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
             
             ### Update Metrics ###
             epoch_G_loss += G_metrics["G_loss"]
@@ -107,16 +110,25 @@ if __name__ == '__main__':
         print(
             epoch,
             "\n\t - G loss: {:.4f}".format(list_G_loss[-1]),
-            "G acc: {:.2%}".format(list_G_acc[-1]),
+            "G acc: {:.2%}".format(list_G_acc[-1]), 
             "D fake loss: {:.4f}".format(list_D_fake_loss[-1]),
             "D real loss: {:.4f}".format(list_D_real_loss[-1]),
             "D fake acc: {:.2%}".format(list_D_fake_acc[-1]),
             "D real acc: {:.2%}".format(list_D_real_acc[-1]),
         )
         
+        writer.add_scalar('Generator/Loss', list_G_loss[-1], epoch)
+        writer.add_scalar('Generator/Accuracy', list_G_acc[-1], epoch)
+        writer.add_scalar('Discriminator/Loss/Fake', list_D_fake_loss[-1], epoch)
+        writer.add_scalar('Discriminator/Loss/Real', list_D_real_loss[-1], epoch)
+        writer.add_scalar('Discriminator/Accuracy/Fake', list_D_fake_acc[-1], epoch)
+        writer.add_scalar('Discriminator/Accuracy/Real', list_D_real_acc[-1], epoch)
+
+        generate_sample(L_G, G, epoch, config)
+        
         if epoch % 10 == 0:
-            save_models(G, D, 'checkpoints')
-                
+            save_models(L_G, G, D, 'checkpoints')
+    writer.close()
     print('Training done')
 
         

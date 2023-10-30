@@ -1,0 +1,13 @@
+{
+    "training": {
+        "batch_size": 64,
+        "lr": 0.001,
+        "epochs": 10
+    },
+    "latent": {
+        "dim" : 100,
+        "law" : "uniform", 
+        "n_gaussian" : 10
+    },
+    "run_name" : "GM-GAN_fullA"
+}

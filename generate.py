@@ -4,8 +4,8 @@ import os
 import argparse
 
 
-from model import Generator
-from utils import load_model
+from model import Generator, Latent_Generator
+from utils import load_model, load_config
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Normalizing Flow.')
@@ -14,12 +14,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-
+    config = load_config("config.json")
 
     print('Model Loading...')
     # Model Pipeline
     mnist_dim = 784
-
+    L_G = Latent_Generator(config)
     model = Generator(g_output_dim = mnist_dim).cuda()
     model = load_model(model, 'checkpoints')
     model = torch.nn.DataParallel(model).cuda()
@@ -35,7 +35,8 @@ if __name__ == '__main__':
     n_samples = 0
     with torch.no_grad():
         while n_samples<10000:
-            z = torch.randn(args.batch_size, 100).cuda()
+            # z = torch.randn(args.batch_size, 100).cuda()
+            z = L_G(batch_size=args.batch_size).cuda()
             x = model(z)
             x = x.reshape(args.batch_size, 28, 28)
             for k in range(x.shape[0]):
