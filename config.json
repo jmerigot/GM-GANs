@@ -1,13 +1,19 @@
 {
     "training": {
+        "type" : "pretrain",
+        "vanilla_id" : 0, 
         "batch_size": 64,
-        "lr": 0.001,
-        "epochs": 10
+        "lr": 2e-4,
+        "epochs": 100
     },
     "latent": {
         "dim" : 100,
-        "law" : "uniform", 
-        "n_gaussian" : 10
-    },
-    "run_name" : "GM-GAN_fullA"
+        "law" : "vanilla", 
+        "n_gaussian" : 10,
+        "learn_type" : "static",
+        "c" : 5,
+        "sigma" : 0.01,
+        "covar_type" : "1"
+    }
 }
+
