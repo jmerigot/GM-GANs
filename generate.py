@@ -15,15 +15,17 @@ if __name__ == '__main__':
 
 
     config = load_config("config.json")
-
+    model_dir = "checkpoints"
     print('Model Loading...')
     # Model Pipeline
     mnist_dim = 784
-    L_G = Latent_Generator(config)
-    model = Generator(g_output_dim = mnist_dim).cuda()
-    model = load_model(model, 'checkpoints')
-    model = torch.nn.DataParallel(model).cuda()
-    model.eval()
+    L_G = Latent_Generator(config).cuda()
+    G = Generator(g_output_dim = mnist_dim).cuda()
+    L_G, G = load_model(L_G, G, model_dir)
+    L_G = torch.nn.DataParallel(L_G).cuda()
+    G = torch.nn.DataParallel(G).cuda()
+    L_G.eval()
+    G.eval()
 
     print('Model loaded.')
 
@@ -37,7 +39,7 @@ if __name__ == '__main__':
         while n_samples<10000:
             # z = torch.randn(args.batch_size, 100).cuda()
             z = L_G(batch_size=args.batch_size).cuda()
-            x = model(z)
+            x = G(z)
             x = x.reshape(args.batch_size, 28, 28)
             for k in range(x.shape[0]):
                 if n_samples<10000:

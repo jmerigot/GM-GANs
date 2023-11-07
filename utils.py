@@ -77,30 +77,73 @@ def save_models(L_G, G, D, folder):
     torch.save(L_G.state_dict(), os.path.join(folder,'L_G.pth'))
 
 
-def load_model(G, folder):
-    ckpt = torch.load(os.path.join(folder,'G.pth'))
-    G.load_state_dict({k.replace('module.', ''): v for k, v in ckpt.items()})
-    return G
+def load_model(L_G, G, model_dir):
+    G_ckpt = torch.load(os.path.join(model_dir,'G.pth'))
+    G.load_state_dict({k.replace('module.', ''): v for k, v in G_ckpt.items()})
+    L_G_ckpt = torch.load(os.path.join(model_dir,'L_G.pth'))
+    L_G.load_state_dict({k.replace('module.', ''): v for k, v in L_G_ckpt.items()})
+    return L_G, G
 
 def load_config(config_file):
     with open(config_file, 'r') as f:
         config = json.load(f)
     return config
 
-def generate_sample(L_G, G, epoch, config):
+def generate_sample(L_G, G, epoch, path):
     
-    batch_size = config["training"]["batch_size"]
-    run_name = config["run_name"]
-    dir = 'runs/' + run_name + f"/epoch_{epoch}"
-    os.makedirs(dir, exist_ok=True)
-
+    batch_size = 32
     n_samples = 0
-    while n_samples<20:
-        # z = torch.randn(args.batch_size, 100).cuda()   
+    epoch_path = os.path.join(path, f"epoch-{epoch}")
+    os.makedirs(epoch_path, exist_ok=True)
+    while n_samples<20:  
         z = L_G(batch_size=batch_size).cuda()
         x = G(z)
         x = x.reshape(batch_size, 28, 28)
         for k in range(x.shape[0]):
             if n_samples<20:
-                torchvision.utils.save_image(x[k:k+1], os.path.join(dir, f'{n_samples}.png'))         
+                torchvision.utils.save_image(x[k:k+1], os.path.join(epoch_path, f'sample-{n_samples}.png'))         
                 n_samples += 1
+
+def get_run_name(config):
+
+    law = config["latent"]["law"] 
+    dim = config["latent"]["dim"]
+    n_gaussian = config["latent"]["n_gaussian"]  
+    learn_type = config["latent"]["learn_type"]  
+    c = config["latent"]["c"]  
+    sigma = config["latent"]["sigma"]
+    covar_type = config["latent"]["covar_type"]
+    batch_size = config["training"]["batch_size"]
+    lr = config["training"]["lr"]
+    epochs = config["training"]["epochs"]
+
+    if law == "vanilla":
+        run_id = f"law-{law}_dim-{dim}_batch_size-{batch_size}_lr-{lr}"
+
+    elif (law == "GM") and (learn_type == "static"):
+        run_id = f"law-{law}_learn_type-{learn_type}_dim-{dim}_n_gaussian-{n_gaussian}_c-{c}_sigma-{sigma}_batch_size-{batch_size}_lr-{lr}"
+        
+    elif (law == "GM") and (learn_type == "dynamic"):
+        run_id = f"law-{law}_learn_type-{learn_type}_dim-{dim}_n_gaussian-{n_gaussian}_covar-{covar_type}_batch_size-{batch_size}_lr-{lr}"
+        
+    return run_id
+
+def get_logs_checkpoints_path(config, run_id):
+    trainin_type = config["training"]["type"]
+    vanilla_id = config["training"]["vanilla_id"]
+
+    if trainin_type == "fine_tuning":
+        logs_path = 'runs/' + vanilla_id + "/fine_tuning/" + run_id + "/logs"
+        checkpoints_path = "runs/" + vanilla_id + "/fine_tuning/" + run_id + 'checkpoints'
+        epoch_samples_path = "runs/" + vanilla_id + "/fine_tuning/" + run_id + '/samples'
+
+    elif trainin_type == "pretrain":
+        logs_path = 'runs/' + run_id + "/pretrain/logs" 
+        checkpoints_path = 'runs/' + run_id + "/pretrain/checkpoints"
+        epoch_samples_path = "runs/" + run_id + "/pretrain/samples"
+
+    os.makedirs(checkpoints_path, exist_ok=True)
+    os.makedirs(logs_path, exist_ok=True)
+    os.makedirs(epoch_samples_path, exist_ok=True)
+
+    return logs_path, checkpoints_path, epoch_samples_path

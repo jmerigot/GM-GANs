@@ -11,22 +11,44 @@ class Latent_Generator(torch.nn.Module):
         self.n_gaussian = self.config_latent["n_gaussian"]
         self.dim = self.config_latent["dim"]
         self.law = self.config_latent["law"]
+        self.learn_type = self.config_latent["learn_type"]
+        self.c = self.config_latent["c"]
+        self.sigma = self.config_latent["sigma"]
 
-        self.categorical = Categorical(torch.tensor([1 / self.n_gaussian for _ in range(self.n_gaussian)]))
-        self.alphas = torch.tensor(
-            [1 / self.n_gaussian for _ in range(self.n_gaussian)])
-        self.mu = torch.nn.ParameterList([
-            torch.nn.Parameter(torch.randn(self.dim))
-            for k in range(self.n_gaussian)])
-        self.A = torch.nn.ParameterList(
-            [torch.nn.Parameter(torch.randn(self.dim, self.dim))
-            for k in range(self.n_gaussian)])
+        if self.law == "GM":
+        
+            if self.learn_type ==  "dynamic":
+                self.categorical = Categorical(torch.tensor([1 / self.n_gaussian for _ in range(self.n_gaussian)]))
+                    # self.alphas = torch.tensor(
+                    #     [1 / self.n_gaussian for _ in range(self.n_gaussian)])
+                self.mu = torch.nn.ParameterList([
+                    torch.nn.Parameter(torch.randn(self.dim))
+                    for k in range(self.n_gaussian)])
+                if self.covar_deg == "1":
+                    self.sigma = torch.nn.Parameter(torch.randn(1))
+                    self.A = [torch.eye(self.dim) * self.sigma
+                              for k in range(self.n_gaussian)]
+                elif self.covar_deg == "diag":
+                    self.sigma = torch.nn.Parameter(torch.randn(self.dim))
+                    self.A = [torch.eye(self.sigma) 
+                              for k in range(self.n_gaussian)]
+                elif self.covar_deg == "full":
+                    self.A = torch.nn.ParameterList(
+                        [torch.nn.Parameter(torch.randn(self.dim, self.dim))
+                         for k in range(self.n_gaussian)])
+
+                
+            elif self.learn_type == "static":
+                self.mu = [torch.distributions.Uniform(-self.c, self.c).sample(self.dim) 
+                        for _ in range(self.n_gaussian)]
+                self.A = [torch.eye(self.dim) * self.sigma for _ in range(self.n_gaussian)]
+
     
     def forward(self, batch_size=1):
         
         if self.law == "GM":
-            k = self.categorical.sample((batch_size,)) # Sample k for each item in the batch
-            epsilon = torch.randn(batch_size, self.dim) # Sample epsilon for each item in the batch
+            k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
+            epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
 
             # Efficiently 
             mu_k = torch.index_select(torch.stack(list(self.mu)), 0, k)
@@ -34,7 +56,7 @@ class Latent_Generator(torch.nn.Module):
             # Using the re-parameterization trick
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
 
-        elif self.law == "uniform":
+        elif self.law == "vanilla":
             z = torch.randn(batch_size, self.dim)
 
         return z

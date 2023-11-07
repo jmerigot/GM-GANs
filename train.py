@@ -11,7 +11,7 @@ from pytorch_fid.inception import InceptionV3
 
 
 from model import Generator, Discriminator, Latent_Generator
-from utils import D_train, G_train, save_models, load_config, generate_sample
+from utils import D_train, G_train, save_models, load_config, generate_sample, get_run_name, get_logs_checkpoints_path
 
 from torch.utils.tensorboard import SummaryWriter
 
@@ -50,11 +50,11 @@ if __name__ == '__main__':
     device = torch.device('cuda' if (torch.cuda.is_available()) else 'cpu')
 
     config = load_config("config.json")
+    run_id = get_run_name(config)
+    logs_path, checkpoints_path, epoch_samples_path = get_logs_checkpoints_path(config, run_id)
 
-    os.makedirs('chekpoints', exist_ok=True)
-    os.makedirs('data', exist_ok=True)
-
-    writer = SummaryWriter("runs/" + config["run_name"])
+    
+    writer = SummaryWriter(logs_path)
 
     # Data Pipeline
     print('Dataset loading...')
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     mnist_dim = 784
     G = torch.nn.DataParallel(Generator(g_output_dim = mnist_dim)).cuda()
     D = torch.nn.DataParallel(Discriminator(mnist_dim)).cuda()
-    L_G = Latent_Generator(config)
+    L_G = torch.nn.DataParallel(Latent_Generator(config)).cuda()
 
 
     # model = DataParallel(model).cuda()
@@ -86,8 +86,9 @@ if __name__ == '__main__':
     # define loss
     criterion = nn.BCELoss() 
 
-    # define optimizers
-    G_optimizer = optim.Adam(G.parameters(), lr = args.lr)
+    # define optimizers  
+    
+    G_optimizer = optim.Adam(list(G.parameters()) + list(L_G.parameters()), lr = args.lr) # if vanilla, L_G has no learnable paramters
     D_optimizer = optim.Adam(D.parameters(), lr = args.lr)
 
 
@@ -121,7 +122,6 @@ if __name__ == '__main__':
         epoch_D_fake_loss = 0
         epoch_D_real_acc = 0
         epoch_D_fake_acc = 0
-
              
         for batch_idx, (x, _) in enumerate(train_loader):
             x = x.view(-1, mnist_dim)
@@ -184,11 +184,11 @@ if __name__ == '__main__':
         writer.add_scalar('Discriminator/Accuracy/Real', list_D_real_acc[-1], epoch)
         writer.add_scalar('FID Score', list_fid[-1], epoch)
         
-        generate_sample(L_G, G, epoch, config)
-        
+        generate_sample(L_G, G, epoch, epoch_samples_path)
+  
         if epoch % 10 == 0:
-            save_models(L_G, G, D, 'checkpoints')
-            
+            save_models(L_G, G, D, checkpoints_path)
+
     writer.close()
     print('Training done')
 
