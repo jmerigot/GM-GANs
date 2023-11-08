@@ -23,7 +23,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
     x_fake, y_fake = G(z).cuda(), torch.zeros(x.shape[0], 1).cuda()
 
     D_output =  D(x_fake)
-    D_fake_loss = criterion(D_output, y_fake)
+    D_fake_loss = criterion(D_output.squeeze(), y_fake)
     D_fake_score = D_output
     
     D_fake_acc = ((D_output.squeeze() > 0.5) == y_fake.squeeze()).float().mean().item()
