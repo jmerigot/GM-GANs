@@ -51,13 +51,14 @@ class Latent_Generator(torch.nn.Module):
             epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
 
             # Efficiently 
-            mu_k = torch.index_select(torch.stack(list(self.mu)), 0, k)
-            A_k = torch.index_select(torch.stack(list((self.A))), 0, k)
+            mu_k = torch.index_select(torch.stack(list(self.mu)), 0, k).cuda()
+            A_k = torch.index_select(torch.stack(list((self.A))), 0, k).cuda()
             # Using the re-parameterization trick
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
+            z = z.cuda()
 
         elif self.law == "vanilla":
-            z = torch.randn(batch_size, self.dim)
+            z = torch.randn(batch_size, self.dim).cuda()
 
         return z
 
