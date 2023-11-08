@@ -19,7 +19,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
 
     # train discriminator on fake
     # z = torch.randn(x.shape[0], 100).cuda()
-    z = L_G(batch_size=x.shape[0], device=torch.cuda()).cuda()
+    z = L_G(batch_size=x.shape[0], device='cuda').cuda()
     x_fake, y_fake = G(z).cuda(), torch.zeros(x.shape[0], 1).cuda()
 
     D_output =  D(x_fake)
