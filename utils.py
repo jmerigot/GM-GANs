@@ -9,7 +9,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
     D.zero_grad()
 
     # train discriminator on real
-    x_real, y_real = x.cuda(), torch.ones(x.shape[0], 1).cuda()
+    x_real, y_real = x, torch.ones(x.shape[0], 1)
     x_real, y_real = x_real.cuda(), y_real.cuda()
 
     D_output = D(x_real)
