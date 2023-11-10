@@ -45,22 +45,29 @@ class Latent_Generator(torch.nn.Module):
 
     
     def forward(self, batch_size=1):
-        
+        print("===============================================================")
+        print(f"Received batch size: {batch_size}")
+
         if self.law == "GM":
             k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
             epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
-
-            # Efficiently 
+            print(f"Shape of k: {k.shape}")
+            print(f"Shape of epsilon: {epsilon.shape}")
+    
             mu_k = torch.index_select(torch.stack(list(self.mu)), 0, k).cuda()
-            A_k = torch.index_select(torch.stack(list((self.A))), 0, k).cuda()
-            # Using the re-parameterization trick
+            A_k = torch.index_select(torch.stack(list(self.A)), 0, k).cuda()
+            print(f"Shape of mu_k: {mu_k.shape}")
+            print(f"Shape of A_k: {A_k.shape}")
+    
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
-            z = z.cuda()
-
+            print(f"Shape of z (latent vector): {z.shape}")
+    
         elif self.law == "vanilla":
             z = torch.randn(batch_size, self.dim).cuda()
+            print(f"Shape of z (vanilla): {z.shape}")
 
         return z
+
 
 class Generator(nn.Module):
     def __init__(self, g_output_dim):
