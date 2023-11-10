@@ -5,6 +5,8 @@ import json
 
 
 def D_train(x, L_G, G, D, D_optimizer, criterion):
+    print(f"Shape of x (real input): {x.shape}")
+    
     #=======================Train the discriminator=======================#
     D.zero_grad()
 
@@ -13,6 +15,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
     x_real, y_real = x_real.cuda(), y_real.cuda()
 
     D_output = D(x_real)
+    print(f"Shape of D_output (real): {D_output.shape}")
     D_real_loss = criterion(D_output, y_real)
     D_real_score = D_output
     D_real_acc = ((D_output.squeeze() > 0.5) == y_real.squeeze()).float().mean().item()
@@ -21,8 +24,14 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
     # z = torch.randn(x.shape[0], 100).cuda()
     z = L_G(batch_size=x.shape[0]).cuda()
     x_fake, y_fake = G(z).cuda(), torch.zeros(x.shape[0], 1).cuda()
+    
+    print(f"Shape of z (latent vector): {z.shape}")
+    print(f"Shape of x_fake (fake data): {x_fake.shape}")
 
     D_output =  D(x_fake)
+    print(f"Shape of D_output (fake): {D_output.shape}")
+    print(f"Shape of y_real (target for real): {y_real.shape}")
+    print(f"Shape of y_fake (target for fake): {y_fake.shape}")
     D_fake_loss = criterion(D_output, y_fake)
     D_fake_score = D_output
     
