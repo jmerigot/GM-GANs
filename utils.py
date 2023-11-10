@@ -23,6 +23,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
     # train discriminator on fake
     # z = torch.randn(x.shape[0], 100).cuda()
     z = L_G(batch_size=x.shape[0]).cuda()
+    print(f"Shape of z before G: {z.shape}")  # New print statement
     x_fake, y_fake = G(z).cuda(), torch.zeros(x.shape[0], 1).cuda()
     
     print(f"Shape of z (latent vector): {z.shape}")
