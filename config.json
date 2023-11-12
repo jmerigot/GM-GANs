@@ -4,7 +4,7 @@
         "vanilla_id" : 0, 
         "batch_size": 64,
         "lr": 1e-4,
-        "epochs": 100
+        "epochs": 200
     },
     "latent": {
         "dim" : 100,
