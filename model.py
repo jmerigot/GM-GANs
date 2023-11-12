@@ -43,7 +43,7 @@ class Latent_Generator(torch.nn.Module):
                 self.A = [torch.eye(self.dim).cuda() * self.sigma for _ in range(self.n_gaussian)]
 
     
-    def forward(self, batch_size):
+    def forward(self, batch_size=1):
 
         if self.law == "GM":
             k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
