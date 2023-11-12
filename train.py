@@ -35,9 +35,9 @@ def calculate_fid_between_test_and_generated_images(test_path, generated_path, b
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train Normalizing Flow.')
-    parser.add_argument("--epochs", type=int, default=100,
+    parser.add_argument("--epochs", type=int, default=200,
                         help="Number of epochs for training.")
-    parser.add_argument("--lr", type=float, default=0.002,
+    parser.add_argument("--lr", type=float, default=0.0002,
                       help="The learning rate to use for training.")
     parser.add_argument("--batch_size", type=int, default=64, 
                         help="Size of mini-batches for SGD")
