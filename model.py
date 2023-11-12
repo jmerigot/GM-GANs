@@ -97,7 +97,7 @@ class Discriminator(nn.Module):
 
 """
 class Discriminator(nn.Module):
-    def __init__(self, d_input_dim, dropout_prob=0.3):
+    def __init__(self, d_input_dim, dropout_prob=0.25):
         super(Discriminator, self).__init__()
         self.fc1 = nn.Linear(d_input_dim, 1024)
         self.dropout1 = nn.Dropout(dropout_prob)
