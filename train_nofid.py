@@ -26,6 +26,7 @@ def save_test_images(test_loader, test_images_path, mnist_dim):
                 torchvision.utils.save_image(x[k:k+1], os.path.join(test_images_path, f'test_image_{batch_idx * args.batch_size + k}.png'))
 
 
+
 # def calculate_fid_between_test_and_generated_images(test_path, generated_path, batch_size, device, dims, num_workers):
 #    fid_score = calculate_fid_given_paths([test_path, generated_path], batch_size, device, dims, num_workers)
 #    return fid_score

@@ -48,6 +48,7 @@ class Latent_Generator(torch.nn.Module):
         print("===============================================================")
         print(f"Received batch size: {batch_size}")
 
+        '''
         if self.law == "GM":
             k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
             epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
@@ -61,8 +62,8 @@ class Latent_Generator(torch.nn.Module):
     
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
             print(f"Shape of z (latent vector): {z.shape}")
-    
-        elif self.law == "vanilla":
+        '''
+        if self.law == "vanilla":
             z = torch.randn(batch_size, self.dim).cuda()
             print(f"Shape of z (vanilla): {z.shape}")
 
