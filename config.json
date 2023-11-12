@@ -2,14 +2,14 @@
     "training": {
         "type" : "pretrain",
         "vanilla_id" : 0, 
-        "batch_size": 16,
+        "batch_size": 64,
         "lr": 2e-4,
         "epochs": 100
     },
     "latent": {
         "dim" : 100,
         "law" : "GM", 
-        "n_gaussian" : 15,
+        "n_gaussian" : 10,
         "learn_type" : "static",
         "c" : 5,
         "sigma" : 0.01,
