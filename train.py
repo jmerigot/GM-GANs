@@ -76,7 +76,7 @@ if __name__ == '__main__':
     mnist_dim = 784
     G = torch.nn.DataParallel(Generator(g_output_dim = mnist_dim)).cuda()
     D = torch.nn.DataParallel(Discriminator(mnist_dim)).cuda()
-    L_G = torch.nn.DataParallel(Latent_Generator(config)).cuda()
+    L_G = Latent_Generator(config).cuda()
 
 
     # model = DataParallel(model).cuda()
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     # Optimizer 
 
     # define loss
-    criterion = nn.BCELoss() 
+    criterion = nn.BCELoss()
 
     # define optimizers  
     
