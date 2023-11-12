@@ -15,7 +15,7 @@ from utils import D_train, G_train, save_models, load_config, generate_sample, g
 
 from torch.utils.tensorboard import SummaryWriter
 
-
+'''
 def save_test_images(test_loader, test_images_path, mnist_dim):
     os.makedirs(test_images_path, exist_ok=True)
 
@@ -24,7 +24,7 @@ def save_test_images(test_loader, test_images_path, mnist_dim):
             x = x.view(-1, mnist_dim)
             for k in range(x.shape[0]):
                 torchvision.utils.save_image(x[k:k+1], os.path.join(test_images_path, f'test_image_{batch_idx * args.batch_size + k}.png'))
-
+'''
 
 
 # def calculate_fid_between_test_and_generated_images(test_path, generated_path, batch_size, device, dims, num_workers):
@@ -75,9 +75,9 @@ if __name__ == '__main__':
 
     print('Model Loading...')
     mnist_dim = 784
-    G = torch.nn.DataParallel(Generator(g_output_dim = mnist_dim)).cuda()
-    D = torch.nn.DataParallel(Discriminator(mnist_dim)).cuda()
-    L_G = torch.nn.DataParallel(Latent_Generator(config)).cuda()
+    G = Generator(g_output_dim=mnist_dim).cuda()
+    D = Discriminator(mnist_dim).cuda()
+    L_G = Latent_Generator(config).cuda()
 
 
     # model = DataParallel(model).cuda()
@@ -112,7 +112,7 @@ if __name__ == '__main__':
         test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=args.batch_size, shuffle=False)
 
         # Save the test images
-        save_test_images(test_loader, test_images_path, mnist_dim)
+        #save_test_images(test_loader, test_images_path, mnist_dim)
     
     n_epoch = args.epochs
     for epoch in trange(1, n_epoch+1, leave=True):  
