@@ -1,6 +1,6 @@
 import torch 
 import os
-from tqdm import trange
+from tqdm import trange, tqdm
 import argparse
 import torchvision
 from torchvision import datasets, transforms
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         save_test_images(test_loader, test_images_path, mnist_dim)
     
     n_epoch = args.epochs
-    for epoch in trange(1, n_epoch+1, leave=True):  
+    for epoch in tqdm(1, n_epoch+1, leave=True):  
         
         epoch_G_loss = 0
         epoch_G_acc = 0
