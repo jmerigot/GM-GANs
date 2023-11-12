@@ -2,12 +2,12 @@
     "training": {
         "type" : "pretrain",
         "vanilla_id" : 0, 
-        "batch_size": 1024,
+        "batch_size": 256,
         "lr": 2e-4,
         "epochs": 100
     },
     "latent": {
-        "dim" : 128,
+        "dim" : 100,
         "law" : "vanilla", 
         "n_gaussian" : 10,
         "learn_type" : "static",
