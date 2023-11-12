@@ -8,10 +8,10 @@
     },
     "latent": {
         "dim" : 100,
-        "law" : "vanilla", 
+        "law" : "GM", 
         "n_gaussian" : 10,
         "learn_type" : "static",
-        "c" : 5,
+        "c" : 10,
         "sigma" : 0.01,
         "covar_type" : "diag"
     }
