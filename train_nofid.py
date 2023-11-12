@@ -39,11 +39,11 @@ if __name__ == '__main__':
                       help="The learning rate to use for training.")
     parser.add_argument("--batch_size", type=int, default=64, 
                         help="Size of mini-batches for SGD")
-    parser.add_argument("--dims", type=int, default=2048,
-                        choices=list(InceptionV3.BLOCK_INDEX_BY_DIM),
-                        help='Dimensionality of Inception features to use.')
-    parser.add_argument("--num_workers", type=int, default=0,
-                        help=('Number of processes to use for data loading. Defaults to `min(8, num_cpus)`'))
+    #parser.add_argument("--dims", type=int, default=2048,
+    #                    choices=list(InceptionV3.BLOCK_INDEX_BY_DIM),
+    #                    help='Dimensionality of Inception features to use.')
+    #parser.add_argument("--num_workers", type=int, default=0,
+    #                    help=('Number of processes to use for data loading. Defaults to `min(8, num_cpus)`'))
 
     args = parser.parse_args()
     
