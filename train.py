@@ -162,6 +162,8 @@ if __name__ == '__main__':
             fid_score = calculate_fid_between_test_and_generated_images(test_images_path, generated_images_path,
                                                                         args.batch_size, device, args.dims,
                                                                         args.num_workers)
+
+            list_fid.append(fid_score)
         
         list_G_loss.append(epoch_G_loss / len(train_loader))
         list_G_acc.append(epoch_G_acc / len(train_loader))
@@ -169,7 +171,6 @@ if __name__ == '__main__':
         list_D_real_acc.append(epoch_D_real_acc / len(train_loader))
         list_D_real_loss.append(epoch_D_real_loss / len(train_loader))
         list_D_fake_loss.append(epoch_D_fake_loss / len(train_loader))
-        list_fid.append(fid_score)
 
         print(
             epoch,
