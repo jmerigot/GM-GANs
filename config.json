@@ -9,7 +9,7 @@
     "latent": {
         "dim" : 100,
         "law" : "vanilla", 
-        "n_gaussian" : 10,
+        "n_gaussian" : 15,
         "learn_type" : "static",
         "c" : 5,
         "sigma" : 0.01,
