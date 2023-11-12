@@ -3,6 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions.categorical import Categorical
 
+torch.manual_seed_all(24)
+torch.cuda.manual_seed_all(24)
+
+
 class Latent_Generator(torch.nn.Module):
     def __init__(self, config):
         super(Latent_Generator, self).__init__() 
