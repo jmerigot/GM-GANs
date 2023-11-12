@@ -105,7 +105,7 @@ if __name__ == '__main__':
     print('Start Training :')
 
     # Path to save test images
-    test_images_path = 'path_to_test_images_directory'  # Replace with the actual path
+    test_images_path = 'path_to_test_images_directory'
 
     if not os.path.exists(test_images_path):
         # Create a DataLoader for test images
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     # CALCULATING THE FID SCORE
         n_samples = 0
-        generated_images_path = os.path.join('runs', config["run_name"], f"epoch_{epoch}")
+        generated_images_path = 'path_to_generated_images_directory'
         os.makedirs(generated_images_path, exist_ok=True)
 
         with torch.no_grad():
