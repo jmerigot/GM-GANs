@@ -2,7 +2,7 @@
     "training": {
         "type" : "pretrain",
         "vanilla_id" : 0, 
-        "batch_size": 64,
+        "batch_size": 32,
         "lr": 1e-4,
         "epochs": 100
     },
