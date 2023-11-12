@@ -79,7 +79,7 @@ class Generator(nn.Module):
         x = F.leaky_relu(self.fc3(x), 0.2)
         return torch.tanh(self.fc4(x))
 
-
+"""
 class Discriminator(nn.Module):
     def __init__(self, d_input_dim):
         super(Discriminator, self).__init__()
@@ -94,8 +94,8 @@ class Discriminator(nn.Module):
         x = F.leaky_relu(self.fc2(x), 0.2)
         x = F.leaky_relu(self.fc3(x), 0.2)
         return torch.sigmoid(self.fc4(x))
-
 """
+
 class Discriminator(nn.Module):
     def __init__(self, d_input_dim, dropout_prob=0.2):
         super(Discriminator, self).__init__()
@@ -106,7 +106,10 @@ class Discriminator(nn.Module):
         self.fc3 = nn.Linear(512, 256)
         self.dropout3 = nn.Dropout(dropout_prob)
         self.fc4 = nn.Linear(256, 1)
+        self.dropout4 = nn.Dropout(dropout_prob)
 
+
+    
     def forward(self, x):
         x = x.view(-1, self.fc1.in_features)
         x = F.leaky_relu(self.fc1(x), 0.2)
@@ -116,5 +119,5 @@ class Discriminator(nn.Module):
         x = F.leaky_relu(self.fc3(x), 0.2)
         x = self.dropout3(x)
         x = self.fc4(x)
+        x = self.dropout4
         return torch.sigmoid(x)
-"""
