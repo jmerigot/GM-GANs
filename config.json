@@ -3,14 +3,14 @@
         "type" : "pretrain",
         "vanilla_id" : 0, 
         "batch_size": 32,
-        "lr": 1e-4,
+        "lr": 8e-5,
         "epochs": 100
     },
     "latent": {
         "dim" : 100,
-        "law" : "GM", 
+        "law" : "vanilla", 
         "n_gaussian" : 10,
-        "learn_type" : "dynamic",
+        "learn_type" : "static",
         "c" : 5,
         "sigma" : 0.01,
         "covar_type" : "1"
