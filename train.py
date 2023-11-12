@@ -133,7 +133,7 @@ if __name__ == '__main__':
             D_metrics = D_train(x, L_G, G, D, D_optimizer, criterion)
             if epoch == 1 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
-            if epoch % 3 == 3 :
+            if epoch % 3 == 0 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
             
             ### Update Metrics ###
