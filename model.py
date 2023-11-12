@@ -79,8 +79,8 @@ class Generator(nn.Module):
         x = F.leaky_relu(self.fc3(x), 0.2)
         return torch.tanh(self.fc4(x))
 
-
-def __init__(self, d_input_dim):
+class Discriminator(nn.Module):
+    def __init__(self, d_input_dim):
         super(Discriminator, self).__init__()
         self.fc1 = nn.Linear(d_input_dim, 1024)
         self.fc2 = nn.Linear(self.fc1.out_features, self.fc1.out_features//2)
