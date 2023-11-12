@@ -13,7 +13,7 @@
         "learn_type" : "static",
         "c" : 5,
         "sigma" : 0.01,
-        "covar_type" : "1"
+        "covar_type" : "diag"
     }
 }
 
