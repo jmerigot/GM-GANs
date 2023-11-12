@@ -18,6 +18,7 @@ class Latent_Generator(torch.nn.Module):
 
         if self.law == "GM":
             self.categorical = Categorical(torch.tensor([1 / self.n_gaussian for _ in range(self.n_gaussian)]))
+            
             if self.learn_type ==  "dynamic":
                 self.categorical = Categorical(torch.tensor([1 / self.n_gaussian for _ in range(self.n_gaussian)]))
                     # self.alphas = torch.tensor(
