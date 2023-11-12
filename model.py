@@ -16,7 +16,7 @@ class Latent_Generator(torch.nn.Module):
         self.sigma = self.config_latent["sigma"]
 
         if self.law == "GM":
-        
+            
             if self.learn_type ==  "dynamic":
                 self.categorical = Categorical(torch.tensor([1 / self.n_gaussian for _ in range(self.n_gaussian)]))
                     # self.alphas = torch.tensor(
@@ -36,19 +36,17 @@ class Latent_Generator(torch.nn.Module):
                     self.A = torch.nn.ParameterList(
                         [torch.nn.Parameter(torch.randn(self.dim, self.dim))
                          for k in range(self.n_gaussian)])
-
-                
-            elif self.learn_type == "static":
+            
+            if self.learn_type == "static":
                 self.mu = [torch.distributions.Uniform(-self.c, self.c).sample(self.dim) 
                         for _ in range(self.n_gaussian)]
                 self.A = [torch.eye(self.dim) * self.sigma for _ in range(self.n_gaussian)]
 
     
-    def forward(self, batch_size=1):
+    def forward(self, batch_size):
         print("===============================================================")
         print(f"Received batch size: {batch_size}")
 
-        '''
         if self.law == "GM":
             k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
             epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
@@ -62,7 +60,7 @@ class Latent_Generator(torch.nn.Module):
     
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
             print(f"Shape of z (latent vector): {z.shape}")
-        '''
+        
         if self.law == "vanilla":
             z = torch.randn(batch_size, self.dim).cuda()
             print(f"Shape of z (vanilla): {z.shape}")
