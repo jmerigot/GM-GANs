@@ -48,24 +48,26 @@ class Latent_Generator(torch.nn.Module):
         print(f"Received batch size: {batch_size}")
 
         if self.law == "GM":
+            print("GM")
             k = self.categorical.sample((batch_size,)).cuda() # Sample k for each item in the batch
             epsilon = torch.randn(batch_size, self.dim).cuda() # Sample epsilon for each item in the batch
-            print(f"Shape of k: {k.shape}")
-            print(f"Shape of epsilon: {epsilon.shape}")
+            #print(f"Shape of k: {k.shape}")
+            #print(f"Shape of epsilon: {epsilon.shape}")
             mu_k = torch.index_select(torch.stack(list(self.mu)), 0, k).cuda()
             A_k = torch.index_select(torch.stack(list(self.A)), 0, k).cuda()
-            print(f"Shape of mu_k: {mu_k.shape}")
-            print(f"Shape of A_k: {A_k.shape}")
+            #print(f"Shape of mu_k: {mu_k.shape}")
+            #print(f"Shape of A_k: {A_k.shape}")
     
             z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
-            print(f"Shape of z (latent vector): {z.shape}")
+            #print(f"Shape of z (latent vector): {z.shape}")
         
         elif self.law == "vanilla":
-            print("Matteo", batch_size)
+            print("vanilla")
+            #print("Matteo", batch_size)
             z = torch.randn(batch_size, self.dim).cuda()
-            print(f"Shape of z (vanilla): {z.shape}")
+            #print(f"Shape of z (vanilla): {z.shape}")
 
-        print(f"Shape of z (vanilla) before return: {z.shape}")
+        #print(f"Shape of z (vanilla) before return: {z.shape}")
         return z
 
 
