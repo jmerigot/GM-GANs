@@ -63,10 +63,12 @@ if __name__ == '__main__':
     # MNIST Dataset
     transform = transforms.Compose([
                 transforms.ToTensor(),
-                transforms.Normalize(mean=(0.5), std=(0.5))])
+                transforms.Normalize(mean=(0), std=(1))]) # before : transforms.Normalize(mean=(0.5), std=(0.5))
 
     train_dataset = datasets.MNIST(root='data/MNIST/', train=True, transform=transform, download=True)
+    print(len(train_dataset))
     test_dataset = datasets.MNIST(root='data/MNIST/', train=False, transform=transform, download=False)
+    print(len(test_dataset))
 
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, 
                                                batch_size=args.batch_size, shuffle=True)
