@@ -3,7 +3,7 @@
         "type" : "pretrain",
         "vanilla_id" : 0, 
         "batch_size": 32,
-        "lr": 8e-5,
+        "lr": 4e-4,
         "epochs": 100
     },
     "latent": {
