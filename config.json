@@ -10,7 +10,7 @@
         "dim" : 100,
         "law" : "vanilla", 
         "n_gaussian" : 10,
-        "learn_type" : "static",
+        "learn_type" : "dynamic",
         "c" : 5,
         "sigma" : 0.01,
         "covar_type" : "1"
