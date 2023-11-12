@@ -80,7 +80,7 @@ class Generator(nn.Module):
         return torch.tanh(self.fc4(x))
 
 class Discriminator(nn.Module):
-    def __init__(self, d_input_dim, dropout_prob=0.5):
+    def __init__(self, d_input_dim, dropout_prob=0.2):
         super(Discriminator, self).__init__()
         self.fc1 = nn.Linear(d_input_dim, 1024)
         self.dropout1 = nn.Dropout(dropout_prob)
