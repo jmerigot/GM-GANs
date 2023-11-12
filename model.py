@@ -106,8 +106,6 @@ class Discriminator(nn.Module):
         self.fc3 = nn.Linear(512, 256)
         self.dropout3 = nn.Dropout(dropout_prob)
         self.fc4 = nn.Linear(256, 1)
-        self.dropout4 = nn.Dropout(dropout_prob)
-
 
     
     def forward(self, x):
@@ -119,5 +117,4 @@ class Discriminator(nn.Module):
         x = F.leaky_relu(self.fc3(x), 0.2)
         x = self.dropout3(x)
         x = self.fc4(x)
-        x = self.dropout4
         return torch.sigmoid(x)
