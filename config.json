@@ -8,7 +8,7 @@
     },
     "latent": {
         "dim" : 100,
-        "law" : "vanilla", 
+        "law" : "GM", 
         "n_gaussian" : 15,
         "learn_type" : "static",
         "c" : 5,
