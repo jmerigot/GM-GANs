@@ -93,8 +93,8 @@ if __name__ == '__main__':
 
     # define optimizers  
     
-    G_optimizer = optim.Adam(list(G.parameters()) + list(L_G.parameters()), lr = args.lr, betas=(0.5, 0.999)) # if vanilla, L_G has no learnable paramters
-    D_optimizer = optim.Adam(D.parameters(), lr = args.lr, betas=(0.5, 0.999))
+    G_optimizer = optim.Adam(list(G.parameters()) + list(L_G.parameters()), lr = args.lr) # if vanilla, L_G has no learnable paramters
+    D_optimizer = optim.Adam(D.parameters(), lr = args.lr)
 
 
     list_G_loss = []
