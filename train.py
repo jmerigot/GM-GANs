@@ -21,7 +21,7 @@ def save_test_images(test_loader, test_images_path, mnist_dim):
     os.makedirs(test_images_path, exist_ok=True)
 
     with torch.no_grad():
-        for batch_idx, (x, _) in enumerate(test_loader):
+        for batch_idx, (x, _) in tqdm(enumerate(test_loader), total=len(test_loader), leave=True):
             x = x.view(-1, mnist_dim)
             for k in range(x.shape[0]):
                 torchvision.utils.save_image(x[k:k+1], os.path.join(test_images_path, f'test_image_{batch_idx * args.batch_size + k}.png'))
