@@ -131,7 +131,8 @@ if __name__ == '__main__':
         for batch_idx, (x, _) in tqdm(enumerate(train_loader), total=len(train_loader), leave=True):
             x = x.view(-1, mnist_dim)
             D_metrics = D_train(x, L_G, G, D, D_optimizer, criterion)
-            G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
+            if epoch % 3 == 0:
+                G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
             
             ### Update Metrics ###
             epoch_G_loss += G_metrics["G_loss"]
