@@ -21,7 +21,7 @@ def save_test_images(test_loader, test_images_path, mnist_dim):
     os.makedirs(test_images_path, exist_ok=True)
 
     with torch.no_grad():
-        for batch_idx, (x, _) in tqdm(enumerate(test_loader), total=len(test_loader), leave=True):
+        for batch_idx, (x, _) in enumerate(test_loader)):
             x = x.view(-1, mnist_dim)
             for k in range(x.shape[0]):
                 torchvision.utils.save_image(x[k:k+1], os.path.join(test_images_path, f'test_image_{batch_idx * args.batch_size + k}.png'))
@@ -141,26 +141,27 @@ if __name__ == '__main__':
             epoch_D_real_acc += D_metrics["D_real_acc"]
             epoch_D_fake_acc += D_metrics["D_fake_acc"]
 
-    # CALCULATING THE FID SCORE
-        n_samples = 0
-        generated_images_path = 'path_to_generated_images_directory'
-        os.makedirs(generated_images_path, exist_ok=True)
+    # CALCULATING THE FID SCORE EVERY 10 EPOCHS
+        if epoch % 10 == 0:
+            n_samples = 0
+            generated_images_path = 'path_to_generated_images_directory'
+            os.makedirs(generated_images_path, exist_ok=True)
 
-        with torch.no_grad():
-            while n_samples < 1000:
-                z = L_G(batch_size=args.batch_size).to(device)
-                x = G(z)
-                x = x.reshape(args.batch_size, 28, 28)
-                for k in range(x.shape[0]):
-                    if n_samples < 1000:
-                        torchvision.utils.save_image(x[k:k + 1], os.path.join(generated_images_path,
-                                                                              f'generated_image_{n_samples}.png'))
-                        n_samples += 1
+            with torch.no_grad():
+                while n_samples < 1000:
+                    z = L_G(batch_size=args.batch_size).to(device)
+                    x = G(z)
+                    x = x.reshape(args.batch_size, 28, 28)
+                    for k in range(x.shape[0]):
+                        if n_samples < 1000:
+                            torchvision.utils.save_image(x[k:k + 1], os.path.join(generated_images_path,
+                                                                                  f'generated_image_{n_samples}.png'))
+                            n_samples += 1
 
-        # Calculate FID score between test and generated images
-        fid_score = calculate_fid_between_test_and_generated_images(test_images_path, generated_images_path,
-                                                                    args.batch_size, device, args.dims,
-                                                                    args.num_workers)
+            # Calculate FID score between test and generated images
+            fid_score = calculate_fid_between_test_and_generated_images(test_images_path, generated_images_path,
+                                                                        args.batch_size, device, args.dims,
+                                                                        args.num_workers)
         
         list_G_loss.append(epoch_G_loss / len(train_loader))
         list_G_acc.append(epoch_G_acc / len(train_loader))
