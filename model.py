@@ -44,8 +44,6 @@ class Latent_Generator(torch.nn.Module):
 
     
     def forward(self, batch_size):
-        print("===============================================================")
-        print(f"Received batch size: {batch_size}")
 
         if self.law == "GM":
             print("GM")
@@ -62,7 +60,6 @@ class Latent_Generator(torch.nn.Module):
             #print(f"Shape of z (latent vector): {z.shape}")
         
         elif self.law == "vanilla":
-            print("vanilla")
             #print("Matteo", batch_size)
             z = torch.randn(batch_size, self.dim).cuda()
             #print(f"Shape of z (vanilla): {z.shape}")
