@@ -68,7 +68,7 @@ def G_train(x, L_G, G, D, G_optimizer, criterion):
     G_loss = criterion(D_output, y)
 
     # gradient backprop & optimize ONLY G's parameters
-    G_loss.backward()
+    G_loss.backward(retain_graph=True)
     G_optimizer.step()
 
     G_acc = ((D_output.squeeze() > 0.5) == y.squeeze()).float().mean().item()
