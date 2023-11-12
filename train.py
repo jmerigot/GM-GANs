@@ -119,7 +119,7 @@ if __name__ == '__main__':
         save_test_images(test_loader, test_images_path, mnist_dim)
     
     n_epoch = args.epochs
-    for epoch in tqdm(1, n_epoch+1, leave=True):  
+    for epoch in tqdm(range(1, n_epoch+1, leave=True)):  
         
         epoch_G_loss = 0
         epoch_G_acc = 0
