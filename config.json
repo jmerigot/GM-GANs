@@ -11,7 +11,7 @@
         "law" : "GM", 
         "n_gaussian" : 10,
         "learn_type" : "static",
-        "c" : 10,
+        "c" : 3,
         "sigma" : 0.01,
         "covar_type" : "diag"
     }
