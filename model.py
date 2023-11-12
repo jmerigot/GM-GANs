@@ -67,6 +67,7 @@ class Latent_Generator(torch.nn.Module):
             z = torch.randn(batch_size, self.dim).cuda()
             print(f"Shape of z (vanilla): {z.shape}")
 
+        print(f"Shape of z (vanilla) before return: {z.shape}")
         return z
 
 
