@@ -135,13 +135,13 @@ if __name__ == '__main__':
             x = x.view(-1, mnist_dim)
             D_metrics = D_train(x, L_G, G, D, D_optimizer, criterion)
             
-            G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
-            """
+            # G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
+            
             if epoch == 1 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
             if epoch % 2 == 0 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
-            """
+            
             
             ### Update Metrics ###
             epoch_G_loss += G_metrics["G_loss"]
