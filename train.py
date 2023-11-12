@@ -103,7 +103,7 @@ if __name__ == '__main__':
     list_D_real_loss = []
     list_D_fake_acc = []
     list_D_real_acc = []
-    list_fid = []
+    list_fid = [0]
     print('Start Training :')
 
     # Path to save test images
