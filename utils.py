@@ -41,7 +41,7 @@ def D_train(x, L_G, G, D, D_optimizer, criterion):
 
     # gradient backprop & optimize ONLY D's parameters
     D_loss = D_real_loss + D_fake_loss
-    D_loss.backward()
+    D_loss.backward(retain_graph=True)
     D_optimizer.step()
 
     D_metrics = {
@@ -68,7 +68,7 @@ def G_train(x, L_G, G, D, G_optimizer, criterion):
     G_loss = criterion(D_output, y)
 
     # gradient backprop & optimize ONLY G's parameters
-    G_loss.backward(retain_graph=True)
+    G_loss.backward()
     G_optimizer.step()
 
     G_acc = ((D_output.squeeze() > 0.5) == y.squeeze()).float().mean().item()
