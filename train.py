@@ -1,6 +1,7 @@
 import torch 
 import os
 from tqdm import trange, tqdm
+import shutil
 import argparse
 import torchvision
 from torchvision import datasets, transforms
@@ -28,6 +29,7 @@ def save_test_images(test_loader, test_images_path, mnist_dim):
 
 def calculate_fid_between_test_and_generated_images(test_path, generated_path, batch_size, device, dims, num_workers):
     fid_score = calculate_fid_given_paths([test_path, generated_path], batch_size, device, dims, num_workers)
+    shutil.rmtree(generated_path)
     return fid_score
 
 
@@ -193,6 +195,9 @@ if __name__ == '__main__':
             save_models(L_G, G, D, checkpoints_path)
 
     writer.close()
+
+    shutil.rmtree(test_images_path)
+    
     print('Training done')
 
         
