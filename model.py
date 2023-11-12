@@ -59,8 +59,7 @@ class Latent_Generator(torch.nn.Module):
             print(f"Shape of mu_k: {mu_k.shape}")
             print(f"Shape of A_k: {A_k.shape}")
     
-            # z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
-            z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze(-1) + mu_k
+            z = torch.bmm(A_k, epsilon.unsqueeze(-1)).squeeze() + mu_k
             print(f"Shape of z (latent vector): {z.shape}")
     
         elif self.law == "vanilla":

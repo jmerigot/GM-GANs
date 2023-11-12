@@ -137,6 +137,7 @@ if __name__ == '__main__':
             epoch_D_fake_acc += D_metrics["D_fake_acc"]
 
     # CALCULATING THE FID SCORE
+        '''
         n_samples = 0
         generated_images_path = os.path.join('runs', config["run_name"], f"epoch_{epoch}")
         os.makedirs(generated_images_path, exist_ok=True)
@@ -153,9 +154,10 @@ if __name__ == '__main__':
                         n_samples += 1
 
         # Calculate FID score between test and generated images
-        #fid_score = calculate_fid_between_test_and_generated_images(test_images_path, generated_images_path,
-        #                                                            args.batch_size, device, args.dims,
-        #                                                            args.num_workers)
+        fid_score = calculate_fid_between_test_and_generated_images(test_images_path, generated_images_path,
+                                                                    args.batch_size, device, args.dims,
+                                                                    args.num_workers)
+        '''
         
         list_G_loss.append(epoch_G_loss / len(train_loader))
         list_G_acc.append(epoch_G_acc / len(train_loader))
