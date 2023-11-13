@@ -3,7 +3,7 @@ import torchvision
 import os
 import argparse
 
-
+from tqdm import tqdm
 from model import Generator, Latent_Generator
 from utils import load_model, load_config
 
@@ -46,6 +46,9 @@ if __name__ == '__main__':
                 if n_samples<10000:
                     torchvision.utils.save_image(x[k:k+1], os.path.join('samples', f'{n_samples}.png'))         
                     n_samples += 1
+                    tqdm.update(1)
+
+    tqdm.close()
 
 
     
