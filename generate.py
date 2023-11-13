@@ -41,7 +41,6 @@ if __name__ == '__main__':
             # z = torch.randn(args.batch_size, 100).cuda()
             z = L_G(batch_size=args.batch_size).cuda()
             x = G(z)
-            print(x.shape)
             x = x.reshape(args.batch_size, 28, 28)
             for k in range(x.shape[0]):
                 if n_samples<10000:
