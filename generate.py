@@ -36,19 +36,20 @@ if __name__ == '__main__':
     os.makedirs('samples', exist_ok=True)
 
     n_samples = 0
+    total_samples = 10000
+    
     with torch.no_grad():
-        while n_samples<10000:
-            # z = torch.randn(args.batch_size, 100).cuda()
-            z = L_G(batch_size=args.batch_size).cuda()
-            x = G(z)
-            x = x.reshape(args.batch_size, 28, 28)
-            for k in range(x.shape[0]):
-                if n_samples<10000:
-                    torchvision.utils.save_image(x[k:k+1], os.path.join('samples', f'{n_samples}.png'))         
-                    n_samples += 1
-                    tqdm.update(1)
-
-    tqdm.close()
+        with tqdm(total=total_samples, desc="Generating samples") as pbar:
+            while n_samples<10000:
+                # z = torch.randn(args.batch_size, 100).cuda()
+                z = L_G(batch_size=args.batch_size).cuda()
+                x = G(z)
+                x = x.reshape(args.batch_size, 28, 28)
+                for k in range(x.shape[0]):
+                    if n_samples<10000:
+                        torchvision.utils.save_image(x[k:k+1], os.path.join('samples', f'{n_samples}.png'))         
+                        n_samples += 1
+                        pbar.update(1)
 
 
     
