@@ -7,14 +7,15 @@ import argparse
 from model import Generator, Latent_Generator
 from utils import load_model, load_config
 
+config = load_config("config.json")
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate Normalizing Flow.')
-    parser.add_argument("--batch_size", type=int, default=2048,
+    parser.add_argument("--batch_size", type=int, default=config["training"]["batch_size"],
                       help="The batch size to use for training.")
     args = parser.parse_args()
 
 
-    config = load_config("config.json")
     model_dir = "checkpoints"
     print('Model Loading...')
     # Model Pipeline
