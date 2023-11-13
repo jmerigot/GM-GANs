@@ -23,8 +23,8 @@ if __name__ == '__main__':
     L_G = Latent_Generator(config).cuda()
     G = Generator(g_output_dim = mnist_dim).cuda()
     L_G, G = load_model(L_G, G, model_dir)
-    L_G = torch.nn.DataParallel(L_G).cuda()
-    G = torch.nn.DataParallel(G).cuda()
+    #L_G = torch.nn.DataParallel(L_G).cuda()
+    #G = torch.nn.DataParallel(G).cuda()
     L_G.eval()
     G.eval()
 
