@@ -1,0 +1,19 @@
+{
+    "training": {
+        "type" : "pretrain",
+        "vanilla_id" : 0, 
+        "batch_size": 64,
+        "lr": 2e-4,
+        "epochs": 200
+    },
+    "latent": {
+        "dim" : 100,
+        "law" : "vanilla", 
+        "n_gaussian" : 10,
+        "learn_type" : "static",
+        "c" : 5,
+        "sigma" : 0.01,
+        "covar_type" : "1"
+    }
+}
+
