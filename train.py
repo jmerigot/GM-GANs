@@ -34,12 +34,15 @@ def calculate_fid_between_test_and_generated_images(test_path, generated_path, b
 
 
 if __name__ == '__main__':
+
+    config = load_config("config.json")
+    
     parser = argparse.ArgumentParser(description='Train Normalizing Flow.')
-    parser.add_argument("--epochs", type=int, default=200,
+    parser.add_argument("--epochs", type=int, default=config["training"]["epochs"],
                         help="Number of epochs for training.")
-    parser.add_argument("--lr", type=float, default=0.0002,
+    parser.add_argument("--lr", type=float, default=config["training"]["lr"],
                       help="The learning rate to use for training.")
-    parser.add_argument("--batch_size", type=int, default=64, 
+    parser.add_argument("--batch_size", type=int, default=config["training"]["batch_size"], 
                         help="Size of mini-batches for SGD")
     parser.add_argument("--dims", type=int, default=2048,
                         choices=list(InceptionV3.BLOCK_INDEX_BY_DIM),
@@ -132,13 +135,13 @@ if __name__ == '__main__':
             x = x.view(-1, mnist_dim)
             D_metrics = D_train(x, L_G, G, D, D_optimizer, criterion)
             
-            G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
-            """
+            # G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
+            
             if epoch == 1 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
             if epoch % 2 == 0 :
                 G_metrics = G_train(x, L_G, G, D, G_optimizer, criterion)
-            """
+            
             
             ### Update Metrics ###
             epoch_G_loss += G_metrics["G_loss"]
