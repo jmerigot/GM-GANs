@@ -6,6 +6,7 @@ The project accomplished the following:
 - Established a robust baseline with the vanilla GAN through rigorous hyperparameter tuning, which significantly informed the approach to refining a static GM-GAN.
 - Generated a higher frequency of better-looking digits with a higher variety using the final Gaussian Mixture model and recommended hyperparameters from the tuning analysis.
 
+The full report associated with this project can be found in the report.pdf file of this repository, which details our approach and methods used to complete this project, as well as the analyzed results.
 
 ## generate.py
 Use the file *generate.py* to generate 10000 samples of MNIST in the folder samples. 
