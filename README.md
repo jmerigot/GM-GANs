@@ -9,7 +9,7 @@ The project accomplished the following:
 The full report associated with this project can be found in the report.pdf file of this repository, which details our approach and methods used to complete this project, as well as the analyzed results.
 
 ## General Information
-If you want to recreate this project, some important information to know.
+If you want to copy and recreate this project, or test it for yourself, some important information to know.
 
 ### train.py
 To run and train the model, use the the file *train.py* to view the results we analyzed in our report.
