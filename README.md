@@ -20,7 +20,7 @@ When your code will be test, we will execute:
   > pip install -r requirements.txt
 
 
-## Acknowledgement
+## Acknowledgements
 This project was made possible with the guidance and support of the following :
  
 - **Prof. Benjamin Negrevergne**
