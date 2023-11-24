@@ -6,7 +6,7 @@ The project accomplished the following:
 - Established a robust baseline with the vanilla GAN through rigorous hyperparameter tuning, which significantly informed the approach to refining a static GM-GAN.
 - Generated a higher frequency of better-looking digits with a higher variety using the final Gaussian Mixture model and recommended hyperparameters from the tuning analysis.
 
-The full report associated with this project can be found in the report.pdf file of this repository, which details our approach and methods used to complete this project, as well as the analyzed results.
+The full report associated with this project can be found in the *report.pdf* file of this repository, which details our approach and methods used to complete this project, as well as the analyzed results.
 
 ## General Information
 If you want to copy and recreate this project, or test it for yourself, some important information to know.
