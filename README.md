@@ -8,13 +8,16 @@ The project accomplished the following:
 
 The full report associated with this project can be found in the report.pdf file of this repository, which details our approach and methods used to complete this project, as well as the analyzed results.
 
-## generate.py
+## General Information
+If you want to recreate this project, some important information to know.
+
+### generate.py
 Use the file *generate.py* to generate 10000 samples of MNIST in the folder samples. 
 Example:
   > python3 generate.py --bacth_size 64
 
 
-## requirements.txt
+### requirements.txt
 Among the good pratice of datascience, we encourage you to use conda or virtualenv to create python environment. 
 To test your code on our platform, you are required to update the *requirements.txt*, with the different librairies you might use. 
 When your code will be test, we will execute: 
