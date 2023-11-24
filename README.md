@@ -17,7 +17,7 @@ To test your code on our platform, you are required to update the *requirements.
 When your code will be test, we will execute: 
   > pip install -r requirements.txt
 
-### Acknowledgement
+## Acknowledgement
 
 This project was made possible with the guidance and support of the following :
  
@@ -40,7 +40,7 @@ This project was a group project and was accomplished through team work involvin
 - **Jules Merigot** (myself)
   - Masters student in the IASD Master Program (AI Systems and Data Science) at PSL Research University.
 
-### License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
