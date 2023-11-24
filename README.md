@@ -6,10 +6,12 @@ The project accomplished the following:
 - Established a robust baseline with the vanilla GAN through rigorous hyperparameter tuning, which significantly informed the approach to refining a static GM-GAN.
 - Generated a higher frequency of better-looking digits with a higher variety using the final Gaussian Mixture model and recommended hyperparameters from the tuning analysis.
 
+
 ## generate.py
 Use the file *generate.py* to generate 10000 samples of MNIST in the folder samples. 
 Example:
   > python3 generate.py --bacth_size 64
+
 
 ## requirements.txt
 Among the good pratice of datascience, we encourage you to use conda or virtualenv to create python environment. 
@@ -17,8 +19,8 @@ To test your code on our platform, you are required to update the *requirements.
 When your code will be test, we will execute: 
   > pip install -r requirements.txt
 
-## Acknowledgement
 
+## Acknowledgement
 This project was made possible with the guidance and support of the following :
  
 - **Prof. Benjamin Negrevergne**
@@ -41,7 +43,6 @@ This project was a group project and was accomplished through team work involvin
   - Masters student in the IASD Master Program (AI Systems and Data Science) at PSL Research University.
 
 ## License
-
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ---
