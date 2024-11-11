@@ -1,6 +1,6 @@
 # Gaussian Mixtures for Generative Adversarial Networks (GANs) in Unsupervised Learning Scenarios
 
-This group project was completed for the Data Science Lab course as part of the IASD Master Program (AI Systems and Data Science) at PSL Research University.
+This group project was completed for the Data Science Lab course as part of the IASD Master Program (AI Systems and Data Science) at PSL Research University during Semester 1 of the 2023-24 academic year.
 The project accomplished the following:
 - Enhanced MNIST dataset's digit generation using Gaussian Mixture Generative Adversarial Networks (GM-GAN) in unsupervised learning scenarios, building upon a well-optimized vanilla GAN.
 - Established a robust baseline with the vanilla GAN through rigorous hyperparameter tuning, which significantly informed the approach to refining a static GM-GAN.
